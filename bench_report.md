@@ -1,5 +1,5 @@
 # HashMap Benchmark Report
-Results from a full 100,000 sample of various test integer key value collections. See `./benches`.
+Results from a full 100,000 sample of various test integer key value collection, see `./benches`. The benchmark system used an Intel i5-4670K.
 
 For each sample of integer values there are 2 tests:
 - ***insert_all***: All keys from the sample are inserted into a `HashMap` of default size.
@@ -114,7 +114,7 @@ u32_times_table_32::find_all    1,992,569            1,697,730             -294,
 u16_times_table_32::find_all    10,302               9,472                     -830   -8.06%   x 1.09
 ```
 
-## Thomas Wang (see https://gist.github.com/badboy/6267743) vs `int_hash`
+## [Thomas Wang](https://gist.github.com/badboy/6267743) vs `int_hash`
 _ℕ **2.23-5.50x** faster, random **1.00-1.43x** faster, 32× table **1.07-1.42x** faster_
 ```
 name                            wang_mix ns/iter  int_hash ns/iter  diff ns/iter   diff %  speedup

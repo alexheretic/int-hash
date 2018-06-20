@@ -14,9 +14,6 @@ let mut map: IntHashMap<u32, &str> = IntHashMap::default();
 map.insert(22, "abc");
 ```
 
-## Limitations
-`int_hash` is valid for use only with integer sized data, ie <= 16 bytes. This is enforced with debug assertions.
-
 ## Benchmark Performance
 For more info see the [the full benchmark report](bench_report.md).
 
@@ -37,3 +34,13 @@ Rust default _aka **SipHash**_ | 32× table | **1.52-3.09x** faster
 `twox_hash` _aka **xx**_ | ℕ: Natural numbers | **2.81-9.19x** faster
 `twox_hash` _aka **xx**_ | Random numbers | **1.17-3.91x** faster
 `twox_hash` _aka **xx**_ | 32× table | **1.52-3.59x** faster
+
+## Limitations
+`int_hash` is valid for use only with integer sized data, ie <= 16 bytes. This is enforced with debug assertions. This should guarantee that whenever `int_hash` works it's among the fastest options.
+
+The algorithm is non-cryptographic.
+
+## Why is it so fast
+`int_hash` is dedicated at solving integer-sized hashing and _only_ integer-sized hashing. Producing a unique `u64` from an integer is not a very difficult problem, though getting a good spread of values to minimise hashmap collisions is a little harder.
+
+The current implementation uses simple `usize` XOR mixing to spread values. The sheer simplicity of this approach makes the hashing operation very fast and the primitive spreading is good enough to produce best-in-class hashmap performance.
