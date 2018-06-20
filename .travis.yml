@@ -1,0 +1,16 @@
+sudo: false
+language: rust
+cache:
+  cargo: true
+rust:
+- stable
+- nightly
+env: RUST_BACKTRACE=full
+os: linux
+script: |
+  if [ "$TRAVIS_RUST_VERSION" == "nightly" ]; then
+    cargo bench --no-run
+    cargo test
+  else
+    cargo test
+  fi
