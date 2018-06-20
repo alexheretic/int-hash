@@ -1,0 +1,18 @@
+[package]
+name = "int_hash"
+version = "0.1.0"
+authors = ["Alex Butler <alexheretic@gmail.com>"]
+description = "Very fast, very simple hash algorithm designed for use in integer hash maps & sets."
+repository = "https://github.com/alexheretic/int-hash"
+keywords = ["hash", "integer"]
+license = "Apache-2.0/MIT"
+readme="README.md"
+
+[dependencies]
+byteorder = "1"
+
+[dev-dependencies]
+fnv = "1"
+rustc-hash = "1"
+twox-hash = "1"
+seahash = "3"

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+## Usage: cargo bench | ./compare
+# shellcheck disable=SC2043
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$dir" || exit 1
+
+temp=$(mktemp)
+tee "$temp" >/dev/null
+
+if [ -z "$1" ]; then
+
+  for l in wang_mix default_hash fnv_crate rustc_crate seahash_crate twox_crate; do
+    for r in int_hash; do
+      if [ "$l" != "$r" ]; then
+        echo
+        ./compare $l $r < "$temp"
+      fi
+    done
+  done
+
+  rm "$temp"
+  exit 0
+fi
+
+left=$1
+right=$2
+rg "$left::" "$temp" | sed "s/$left:://g" > target/"$left"
+rg "$right::" "$temp" | sed "s/$right:://g" > target/"$right"
+
+cargo benchcmp target/"$left" target/"$right"
+
+rm -f "$temp"
