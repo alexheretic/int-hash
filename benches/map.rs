@@ -22,7 +22,7 @@ const KEYS_LINE_COUNT: usize = 100_000;
 /// Sample size of the integers, ie should be <= `KEYS_LINE_COUNT`
 /// - 300 is fast & seems ok
 /// - 100_000 gives full report
-const BENCH_MAP_SIZE: usize = 300; // 100_000;
+const BENCH_MAP_SIZE: usize = 5_000; // 100_000;
 
 macro_rules! bench_keys {
     ($build_hasher:expr, $($t:ty = $keys_name:ident = $keys_file:expr),+ $(,)*) => {
@@ -104,25 +104,22 @@ macro_rules! bench_hasher {
 
                 bench_keys!(
                     $build_hasher,
-                    u128 = u128_rand = "benches/rand-u64.txt",
                     u128 = u128_natural = "benches/natural-u64.txt",
-
-                    usize = usize_rand = "benches/rand-u64-small.txt",
-                    usize = usize_natural = "benches/natural-u64.txt",
-
-                    u64 = u64_rand = "benches/rand-u64.txt",
-                    u64 = u64_times_table_32 = "benches/32xt-u64.txt",
                     u64 = u64_natural = "benches/natural-u64.txt",
-
-                    u32 = u32_rand = "benches/rand-u64-small.txt",
-                    u32 = u32_times_table_32 = "benches/32xt-u64.txt",
+                    usize = usize_natural = "benches/natural-u64.txt",
                     u32 = u32_natural = "benches/natural-u64.txt",
-
-                    u16 = u16_rand = "benches/rand-u64-small.txt",
-                    u16 = u16_times_table_32 = "benches/32xt-u64.txt",
                     u16 = u16_natural = "benches/natural-u64.txt",
 
+                    u128 = u128_rand = "benches/rand-u64.txt",
+                    u64 = u64_rand = "benches/rand-u64.txt",
+                    usize = usize_rand = "benches/rand-u64-small.txt",
+                    u32 = u32_rand = "benches/rand-u64-small.txt",
+                    u16 = u16_rand = "benches/rand-u64-small.txt",
                     u8 = u8_rand = "benches/rand-u8.txt",
+
+                    u64 = u64_times_table_32 = "benches/32xt-u64.txt",
+                    u32 = u32_times_table_32 = "benches/32xt-u64.txt",
+                    u16 = u16_times_table_32 = "benches/32xt-u64.txt",
                 );
             }
         )*
@@ -135,9 +132,9 @@ type XxBuildHasher = BuildHasherDefault<twox_hash::XxHash>;
 
 bench_hasher!(
     int_hash, IntBuildHasher::default();
-    wang_mix, wang::WangMixBuildHasher::default();
-    fnv_crate, FnvBuildHasher::default();
-    rustc_crate, FxBuildHasher::default();
+    // wang_mix, wang::WangMixBuildHasher::default();
+    // fnv_crate, FnvBuildHasher::default();
+    // rustc_crate, FxBuildHasher::default();
 
     // Following are not good for small values like integers (just here to show that)
     // default_hash, RandomState::new();

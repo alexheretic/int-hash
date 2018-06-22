@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+## Endlessly search for a better initial hash seed
+
+set -eu
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$dir"
+
+## min beating threshold
+best_score='0.0'
+## current default seed
+current_default_seed='0xdead_beef_babe_face'
+
+if ! grep -q "Self::new($current_default_seed)" src/lib.rs; then
+  echo "initial seed $current_default_seed not found" >&2
+  exit 1
+fi
+
+if ! test -f target/control; then
+  rustbench --control
+fi
+
+seeds_tested=0
+best_seed=$current_default_seed
+
+function finish {
+  git checkout src/lib.rs
+  echo  >&2
+  if [ $current_default_seed = "$best_seed" ]; then
+    echo "$seeds_tested tested, no faster seeds found" >&2
+  else
+    echo "$seeds_tested tested, best: $best_seed = $best_score% faster on average" >&2
+    sed -i "s/Self::new($current_default_seed)/Self::new($best_seed)/" src/lib.rs
+    trash target/control
+  fi
+}
+trap finish EXIT
+
+function bc_eval {
+  (( $(echo "$1" | bc -l) ))
+}
+
+while true; do
+  new_seed=$(hexdump -n 8 -e '4/4 "%08X" 1 "\n"' /dev/urandom | sed -e 's/[[:space:]]*$//')
+  new_seed="0x$new_seed"
+  sed -i "s/Self::new($current_default_seed)/Self::new($new_seed)/" src/lib.rs
+
+  rustbench >/dev/null 2>&1
+
+  natural_score=$(cargo benchcmp target/control target/change \
+                  | tail -n+2 \
+                  | grep '_natural::' \
+                  | awk '{s+=($7 - 1); n+=1} END {print s / n}')
+  rand_score=$(cargo benchcmp target/control target/change \
+               | tail -n+2 \
+               | grep '_rand::' \
+               | awk '{s+=($7 - 1); n+=1} END {print s / n}')
+  times_score=$(cargo benchcmp target/control target/change \
+                | tail -n+2 \
+                | grep 'times_table_32::' \
+                | awk '{s+=($7 - 1); n+=1} END {print s / n}')
+  overall_score=$(cargo benchcmp target/control target/change \
+                  | tail -n+2 \
+                  | awk '{s+=($7 - 1); n+=1} END {print s / n}')
+
+  seeds_tested=$((seeds_tested + 1))
+
+  ## To be an improvement the score must be higher than current best
+  ## The seed must also not regress performance in any class
+  if bc_eval "$overall_score > $best_score" \
+     && bc_eval "$natural_score > 0" \
+     && bc_eval "$rand_score > 0" \
+     && bc_eval "$times_score > 0"; then
+    echo "$new_seed scored: $overall_score (new best), ℕ $natural_score, R $rand_score, 32× $times_score" >&2
+    echo >&2
+    cargo benchcmp target/control target/change
+    echo >&2
+    best_score=$overall_score
+    best_seed=$new_seed
+  else
+    echo "$new_seed scored: $overall_score, ℕ $natural_score, R $rand_score, 32× $times_score" >&2
+  fi
+
+  git checkout src/lib.rs
+done
