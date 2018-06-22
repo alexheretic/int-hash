@@ -9,7 +9,7 @@ cd "$dir"
 ## min beating threshold
 best_score='0.0'
 ## current default seed
-current_default_seed='0xdead_beef_babe_face'
+current_default_seed='0xe26a_f83e_0dff_34cc'
 
 if ! grep -q "Self::new($current_default_seed)" src/lib.rs; then
   echo "initial seed $current_default_seed not found" >&2
