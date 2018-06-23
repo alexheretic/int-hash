@@ -104,25 +104,22 @@ macro_rules! bench_hasher {
 
                 bench_keys!(
                     $build_hasher,
-                    u128 = u128_rand = "benches/rand-u64.txt",
                     u128 = u128_natural = "benches/natural-u64.txt",
-
-                    usize = usize_rand = "benches/rand-u64-small.txt",
-                    usize = usize_natural = "benches/natural-u64.txt",
-
-                    u64 = u64_rand = "benches/rand-u64.txt",
-                    u64 = u64_times_table_32 = "benches/32xt-u64.txt",
                     u64 = u64_natural = "benches/natural-u64.txt",
-
-                    u32 = u32_rand = "benches/rand-u64-small.txt",
-                    u32 = u32_times_table_32 = "benches/32xt-u64.txt",
+                    usize = usize_natural = "benches/natural-u64.txt",
                     u32 = u32_natural = "benches/natural-u64.txt",
-
-                    u16 = u16_rand = "benches/rand-u64-small.txt",
-                    u16 = u16_times_table_32 = "benches/32xt-u64.txt",
                     u16 = u16_natural = "benches/natural-u64.txt",
 
+                    u128 = u128_rand = "benches/rand-u64.txt",
+                    u64 = u64_rand = "benches/rand-u64.txt",
+                    usize = usize_rand = "benches/rand-u64-small.txt",
+                    u32 = u32_rand = "benches/rand-u64-small.txt",
+                    u16 = u16_rand = "benches/rand-u64-small.txt",
                     u8 = u8_rand = "benches/rand-u8.txt",
+
+                    u64 = u64_times_table_32 = "benches/32xt-u64.txt",
+                    u32 = u32_times_table_32 = "benches/32xt-u64.txt",
+                    u16 = u16_times_table_32 = "benches/32xt-u64.txt",
                 );
             }
         )*

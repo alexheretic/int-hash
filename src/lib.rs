@@ -74,7 +74,8 @@ impl Default for IntHasher {
     #[cfg(target_pointer_width = "64")]
     #[inline]
     fn default() -> Self {
-        Self::new(0xdead_beef_babe_face)
+        // Magic number found by random search & benchmark
+        Self::new(0xe26a_f83e_0dff_34cc)
     }
 }
 
