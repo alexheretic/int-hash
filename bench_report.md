@@ -6,218 +6,218 @@ For each sample of integer values there are 2 tests:
 - ***find_all***: All key-values from the sample are looked up from a pre-populated `HashMap`.
 
 ## default vs `int_hash`
-_ℕ **2.57-8.38x** faster, random **1.17-3.61x** faster, 32× table **1.52-3.09x** faster_
+_ℕ **2.53-9.06x** faster, random **1.18-3.90x** faster, 32× table **1.49-3.13x** faster_
 ```
 name                            default_hash ns/iter  int_hash ns/iter  diff ns/iter   diff %  speedup
-u128_natural::insert_all        9,419,267             3,666,087           -5,753,180  -61.08%   x 2.57
-u64_natural::insert_all         7,655,443             2,167,465           -5,487,978  -71.69%   x 3.53
-usize_natural::insert_all       7,748,178             2,126,062           -5,622,116  -72.56%   x 3.64
-u32_natural::insert_all         7,496,285             2,521,114           -4,975,171  -66.37%   x 2.97
-u16_natural::insert_all         5,558,629             1,905,489           -3,653,140  -65.72%   x 2.92
-u128_natural::find_all          4,157,188             559,842             -3,597,346  -86.53%   x 7.43
-u64_natural::find_all           3,519,071             422,216             -3,096,855  -88.00%   x 8.33
-usize_natural::find_all         3,542,723             422,871             -3,119,852  -88.06%   x 8.38
-u32_natural::find_all           2,967,511             368,664             -2,598,847  -87.58%   x 8.05
-u16_natural::find_all           1,452,387             258,888             -1,193,499  -82.17%   x 5.61
+u128_natural::insert_all        9,430,402             3,726,791           -5,703,611  -60.48%   x 2.53
+u64_natural::insert_all         7,658,142             2,135,107           -5,523,035  -72.12%   x 3.59
+usize_natural::insert_all       7,677,566             2,131,158           -5,546,408  -72.24%   x 3.60
+u32_natural::insert_all         7,478,978             2,520,760           -4,958,218  -66.30%   x 2.97
+u16_natural::insert_all         5,534,763             1,913,495           -3,621,268  -65.43%   x 2.89
+u128_natural::find_all          4,145,854             503,631             -3,642,223  -87.85%   x 8.23
+u64_natural::find_all           3,596,242             396,861             -3,199,381  -88.96%   x 9.06
+usize_natural::find_all         3,584,711             398,027             -3,186,684  -88.90%   x 9.01
+u32_natural::find_all           2,972,257             342,627             -2,629,630  -88.47%   x 8.67
+u16_natural::find_all           1,441,834             276,190             -1,165,644  -80.84%   x 5.22
 
-u128_rand::insert_all           9,427,925             7,920,764           -1,507,161  -15.99%   x 1.19
-u64_rand::insert_all            7,656,231             6,341,322           -1,314,909  -17.17%   x 1.21
-usize_rand::insert_all          7,731,195             6,490,067           -1,241,128  -16.05%   x 1.19
-u32_rand::insert_all            7,476,879             6,375,432           -1,101,447  -14.73%   x 1.17
-u16_rand::insert_all            382,677               324,580                -58,097  -15.18%   x 1.18
-u8_rand::insert_all             15,766                6,198                   -9,568  -60.69%   x 2.54
-u128_rand::find_all             4,184,843             2,076,310           -2,108,533  -50.38%   x 2.02
-u64_rand::find_all              3,527,884             1,949,207           -1,578,677  -44.75%   x 1.81
-usize_rand::find_all            3,525,940             1,914,162           -1,611,778  -45.71%   x 1.84
-u32_rand::find_all              2,971,218             1,831,239           -1,139,979  -38.37%   x 1.62
-u16_rand::find_all              97,125                29,991                 -67,134  -69.12%   x 3.24
-u8_rand::find_all               3,445                 954                     -2,491  -72.31%   x 3.61
+u128_rand::insert_all           9,417,089             7,963,523           -1,453,566  -15.44%   x 1.18
+u64_rand::insert_all            7,667,847             6,310,732           -1,357,115  -17.70%   x 1.22
+usize_rand::insert_all          7,681,926             6,455,917           -1,226,009  -15.96%   x 1.19
+u32_rand::insert_all            7,470,839             6,315,266           -1,155,573  -15.47%   x 1.18
+u16_rand::insert_all            386,024               315,440                -70,584  -18.28%   x 1.22
+u8_rand::insert_all             15,748                6,076                   -9,672  -61.42%   x 2.59
+u128_rand::find_all             4,125,308             2,065,209           -2,060,099  -49.94%   x 2.00
+u64_rand::find_all              3,582,193             1,940,426           -1,641,767  -45.83%   x 1.85
+usize_rand::find_all            3,560,783             1,864,784           -1,695,999  -47.63%   x 1.91
+u32_rand::find_all              2,969,717             1,753,468           -1,216,249  -40.96%   x 1.69
+u16_rand::find_all              97,320                30,497                 -66,823  -68.66%   x 3.19
+u8_rand::find_all               3,444                 882                     -2,562  -74.39%   x 3.90
 
-u64_times_table_32::insert_all  7,664,132             4,936,084           -2,728,048  -35.60%   x 1.55
-u32_times_table_32::insert_all  7,495,207             4,598,230           -2,896,977  -38.65%   x 1.63
-u16_times_table_32::insert_all  138,752               91,407                 -47,345  -34.12%   x 1.52
-u64_times_table_32::find_all    3,514,995             1,905,971           -1,609,024  -45.78%   x 1.84
-u32_times_table_32::find_all    2,973,862             1,697,730           -1,276,132  -42.91%   x 1.75
-u16_times_table_32::find_all    29,256                9,472                  -19,784  -67.62%   x 3.09
+u64_times_table_32::insert_all  7,677,063             4,862,680           -2,814,383  -36.66%   x 1.58
+u32_times_table_32::insert_all  7,484,472             4,366,920           -3,117,552  -41.65%   x 1.71
+u16_times_table_32::insert_all  140,074               93,945                 -46,129  -32.93%   x 1.49
+u64_times_table_32::find_all    3,573,829             1,936,193           -1,637,636  -45.82%   x 1.85
+u32_times_table_32::find_all    2,965,513             1,625,043           -1,340,470  -45.20%   x 1.82
+u16_times_table_32::find_all    29,571                9,458                  -20,113  -68.02%   x 3.13
 ```
-
 
 ## `fnv` vs `int_hash`
-_ℕ **1.36-5.27x** faster, random **0.99-1.83x** faster, 32× table **0.60-1.12x** faster_
+_ℕ **1.31-5.84x** faster, random **1.00-1.84x** faster, 32× table **0.59-1.14x** faster_
 ```
 name                            fnv_crate ns/iter  int_hash ns/iter  diff ns/iter   diff %  speedup
-u128_natural::insert_all        7,100,767          3,666,087           -3,434,680  -48.37%   x 1.94
-u64_natural::insert_all         4,236,083          2,167,465           -2,068,618  -48.83%   x 1.95
-usize_natural::insert_all       4,205,092          2,126,062           -2,079,030  -49.44%   x 1.98
-u32_natural::insert_all         4,288,739          2,521,114           -1,767,625  -41.22%   x 1.70
-u16_natural::insert_all         3,646,492          1,905,489           -1,741,003  -47.74%   x 1.91
-u128_natural::find_all          2,951,928          559,842             -2,392,086  -81.03%   x 5.27
-u64_natural::find_all           1,610,153          422,216             -1,187,937  -73.78%   x 3.81
-usize_natural::find_all         1,709,800          422,871             -1,286,929  -75.27%   x 4.04
-u32_natural::find_all           1,712,490          368,664             -1,343,826  -78.47%   x 4.65
-u16_natural::find_all           353,262            258,888                -94,374  -26.72%   x 1.36
+u128_natural::insert_all        7,096,628          3,726,791           -3,369,837  -47.49%   x 1.90
+u64_natural::insert_all         4,225,578          2,135,107           -2,090,471  -49.47%   x 1.98
+usize_natural::insert_all       4,209,341          2,131,158           -2,078,183  -49.37%   x 1.98
+u32_natural::insert_all         4,275,368          2,520,760           -1,754,608  -41.04%   x 1.70
+u16_natural::insert_all         3,631,043          1,913,495           -1,717,548  -47.30%   x 1.90
+u128_natural::find_all          2,939,183          503,631             -2,435,552  -82.86%   x 5.84
+u64_natural::find_all           1,658,005          396,861             -1,261,144  -76.06%   x 4.18
+usize_natural::find_all         1,618,836          398,027             -1,220,809  -75.41%   x 4.07
+u32_natural::find_all           1,607,451          342,627             -1,264,824  -78.69%   x 4.69
+u16_natural::find_all           361,278            276,190                -85,088  -23.55%   x 1.31
 
-u128_rand::insert_all           9,441,726          7,920,764           -1,520,962  -16.11%   x 1.19
-u64_rand::insert_all            7,049,711          6,341,322             -708,389  -10.05%   x 1.11
-usize_rand::insert_all          6,780,380          6,490,067             -290,313   -4.28%   x 1.04
-u32_rand::insert_all            6,344,375          6,375,432               31,057    0.49%   x 1.00
-u16_rand::insert_all            322,542            324,580                  2,038    0.63%   x 0.99
-u8_rand::insert_all             6,153              6,198                       45    0.73%   x 0.99
-u128_rand::find_all             3,791,003          2,076,310           -1,714,693  -45.23%   x 1.83
-u64_rand::find_all              2,426,270          1,949,207             -477,063  -19.66%   x 1.24
-usize_rand::find_all            2,395,299          1,914,162             -481,137  -20.09%   x 1.25
-u32_rand::find_all              1,989,625          1,831,239             -158,386   -7.96%   x 1.09
-u16_rand::find_all              34,988             29,991                  -4,997  -14.28%   x 1.17
-u8_rand::find_all               1,153              954                       -199  -17.26%   x 1.21
+u128_rand::insert_all           9,458,147          7,963,523           -1,494,624  -15.80%   x 1.19
+u64_rand::insert_all            6,987,447          6,310,732             -676,715   -9.68%   x 1.11
+usize_rand::insert_all          6,856,428          6,455,917             -400,511   -5.84%   x 1.06
+u32_rand::insert_all            6,293,380          6,315,266               21,886    0.35%   x 1.00
+u16_rand::insert_all            323,246            315,440                 -7,806   -2.41%   x 1.02
+u8_rand::insert_all             6,220              6,076                     -144   -2.32%   x 1.02
+u128_rand::find_all             3,803,030          2,065,209           -1,737,821  -45.70%   x 1.84
+u64_rand::find_all              2,504,745          1,940,426             -564,319  -22.53%   x 1.29
+usize_rand::find_all            2,424,788          1,864,784             -560,004  -23.09%   x 1.30
+u32_rand::find_all              1,923,486          1,753,468             -170,018   -8.84%   x 1.10
+u16_rand::find_all              35,830             30,497                  -5,333  -14.88%   x 1.17
+u8_rand::find_all               1,023              882                       -141  -13.78%   x 1.16
 
-u64_times_table_32::insert_all  4,801,353          4,936,084              134,731    2.81%   x 0.97
-u32_times_table_32::insert_all  4,867,927          4,598,230             -269,697   -5.54%   x 1.06
-u16_times_table_32::insert_all  55,035             91,407                  36,372   66.09%   x 0.60
-u64_times_table_32::find_all    1,630,910          1,905,971              275,061   16.87%   x 0.86
-u32_times_table_32::find_all    1,587,556          1,697,730              110,174    6.94%   x 0.94
-u16_times_table_32::find_all    10,632             9,472                   -1,160  -10.91%   x 1.12
+u64_times_table_32::insert_all  4,789,588          4,862,680               73,092    1.53%   x 0.98
+u32_times_table_32::insert_all  4,854,573          4,366,920             -487,653  -10.05%   x 1.11
+u16_times_table_32::insert_all  55,893             93,945                  38,052   68.08%   x 0.59
+u64_times_table_32::find_all    1,656,430          1,936,193              279,763   16.89%   x 0.86
+u32_times_table_32::find_all    1,520,743          1,625,043              104,300    6.86%   x 0.94
+u16_times_table_32::find_all    10,781             9,458                   -1,323  -12.27%   x 1.14
 ```
 
 ## `rustc_hash` vs `int_hash`
-_ℕ **1.16-2.34x** faster, random **0.94-1.10x** faster, 32× table **0.98-1.17x** faster_
+_ℕ **1.14-2.48x** faster, random **0.95-1.07x** faster, 32× table **0.97-1.13x** faster_
 ```
 name                            rustc_crate ns/iter  int_hash ns/iter  diff ns/iter   diff %  speedup
-u128_natural::insert_all        5,264,292            3,666,087           -1,598,205  -30.36%   x 1.44
-u64_natural::insert_all         2,961,574            2,167,465             -794,109  -26.81%   x 1.37
-usize_natural::insert_all       2,992,092            2,126,062             -866,030  -28.94%   x 1.41
-u32_natural::insert_all         3,240,480            2,521,114             -719,366  -22.20%   x 1.29
-u16_natural::insert_all         2,207,857            1,905,489             -302,368  -13.70%   x 1.16
-u128_natural::find_all          1,312,536            559,842               -752,694  -57.35%   x 2.34
-u64_natural::find_all           550,087              422,216               -127,871  -23.25%   x 1.30
-usize_natural::find_all         530,627              422,871               -107,756  -20.31%   x 1.25
-u32_natural::find_all           459,968              368,664                -91,304  -19.85%   x 1.25
-u16_natural::find_all           330,374              258,888                -71,486  -21.64%   x 1.28
+u128_natural::insert_all        5,295,947            3,726,791           -1,569,156  -29.63%   x 1.42
+u64_natural::insert_all         2,939,389            2,135,107             -804,282  -27.36%   x 1.38
+usize_natural::insert_all       2,943,134            2,131,158             -811,976  -27.59%   x 1.38
+u32_natural::insert_all         3,250,113            2,520,760             -729,353  -22.44%   x 1.29
+u16_natural::insert_all         2,185,980            1,913,495             -272,485  -12.47%   x 1.14
+u128_natural::find_all          1,250,862            503,631               -747,231  -59.74%   x 2.48
+u64_natural::find_all           512,569              396,861               -115,708  -22.57%   x 1.29
+usize_natural::find_all         531,162              398,027               -133,135  -25.06%   x 1.33
+u32_natural::find_all           455,601              342,627               -112,974  -24.80%   x 1.33
+u16_natural::find_all           339,095              276,190                -62,905  -18.55%   x 1.23
 
-u128_rand::insert_all           7,926,443            7,920,764               -5,679   -0.07%   x 1.00
-u64_rand::insert_all            6,268,822            6,341,322               72,500    1.16%   x 0.99
-usize_rand::insert_all          6,130,916            6,490,067              359,151    5.86%   x 0.94
-u32_rand::insert_all            6,114,297            6,375,432              261,135    4.27%   x 0.96
-u16_rand::insert_all            303,774              324,580                 20,806    6.85%   x 0.94
-u8_rand::insert_all             6,241                6,198                      -43   -0.69%   x 1.01
-u128_rand::find_all             2,277,356            2,076,310             -201,046   -8.83%   x 1.10
-u64_rand::find_all              1,923,126            1,949,207               26,081    1.36%   x 0.99
-usize_rand::find_all            1,860,523            1,914,162               53,639    2.88%   x 0.97
-u32_rand::find_all              1,801,016            1,831,239               30,223    1.68%   x 0.98
-u16_rand::find_all              31,855               29,991                  -1,864   -5.85%   x 1.06
-u8_rand::find_all               1,021                954                        -67   -6.56%   x 1.07
+u128_rand::insert_all           7,929,368            7,963,523               34,155    0.43%   x 1.00
+u64_rand::insert_all            6,238,452            6,310,732               72,280    1.16%   x 0.99
+usize_rand::insert_all          6,216,101            6,455,917              239,816    3.86%   x 0.96
+u32_rand::insert_all            6,099,500            6,315,266              215,766    3.54%   x 0.97
+u16_rand::insert_all            310,424              315,440                  5,016    1.62%   x 0.98
+u8_rand::insert_all             6,275                6,076                     -199   -3.17%   x 1.03
+u128_rand::find_all             2,165,399            2,065,209             -100,190   -4.63%   x 1.05
+u64_rand::find_all              1,897,912            1,940,426               42,514    2.24%   x 0.98
+usize_rand::find_all            1,776,407            1,864,784               88,377    4.98%   x 0.95
+u32_rand::find_all              1,737,856            1,753,468               15,612    0.90%   x 0.99
+u16_rand::find_all              32,639               30,497                  -2,142   -6.56%   x 1.07
+u8_rand::find_all               895                  882                        -13   -1.45%   x 1.01
 
-u64_times_table_32::insert_all  4,965,685            4,936,084              -29,601   -0.60%   x 1.01
-u32_times_table_32::insert_all  4,891,667            4,598,230             -293,437   -6.00%   x 1.06
-u16_times_table_32::insert_all  89,659               91,407                   1,748    1.95%   x 0.98
-u64_times_table_32::find_all    2,203,289            1,905,971             -297,318  -13.49%   x 1.16
-u32_times_table_32::find_all    1,992,569            1,697,730             -294,839  -14.80%   x 1.17
-u16_times_table_32::find_all    10,302               9,472                     -830   -8.06%   x 1.09
+u64_times_table_32::insert_all  4,706,111            4,862,680              156,569    3.33%   x 0.97
+u32_times_table_32::insert_all  4,665,906            4,366,920             -298,986   -6.41%   x 1.07
+u16_times_table_32::insert_all  94,243               93,945                    -298   -0.32%   x 1.00
+u64_times_table_32::find_all    2,082,625            1,936,193             -146,432   -7.03%   x 1.08
+u32_times_table_32::find_all    1,828,796            1,625,043             -203,753  -11.14%   x 1.13
+u16_times_table_32::find_all    10,539               9,458                   -1,081  -10.26%   x 1.11
 ```
 
 ## [Thomas Wang](https://gist.github.com/badboy/6267743) vs `int_hash`
-_ℕ **2.23-5.50x** faster, random **1.00-1.43x** faster, 32× table **1.07-1.42x** faster_
+_ℕ **2.21-5.82x** faster, random **1.04-1.46x** faster, 32× table **1.04-1.48x** faster_
 ```
 name                            wang_mix ns/iter  int_hash ns/iter  diff ns/iter   diff %  speedup
-u128_natural::insert_all        8,193,466         3,666,087           -4,527,379  -55.26%   x 2.23
-u64_natural::insert_all         6,619,744         2,167,465           -4,452,279  -67.26%   x 3.05
-usize_natural::insert_all       6,628,400         2,126,062           -4,502,338  -67.92%   x 3.12
-u32_natural::insert_all         6,562,860         2,521,114           -4,041,746  -61.59%   x 2.60
-u16_natural::insert_all         5,016,280         1,905,489           -3,110,791  -62.01%   x 2.63
-u128_natural::find_all          2,338,982         559,842             -1,779,140  -76.06%   x 4.18
-u64_natural::find_all           2,058,018         422,216             -1,635,802  -79.48%   x 4.87
-usize_natural::find_all         2,135,752         422,871             -1,712,881  -80.20%   x 5.05
-u32_natural::find_all           2,027,216         368,664             -1,658,552  -81.81%   x 5.50
-u16_natural::find_all           842,024           258,888               -583,136  -69.25%   x 3.25
+u128_natural::insert_all        8,223,081         3,726,791           -4,496,290  -54.68%   x 2.21
+u64_natural::insert_all         6,627,508         2,135,107           -4,492,401  -67.78%   x 3.10
+usize_natural::insert_all       6,624,942         2,131,158           -4,493,784  -67.83%   x 3.11
+u32_natural::insert_all         6,530,064         2,520,760           -4,009,304  -61.40%   x 2.59
+u16_natural::insert_all         4,950,439         1,913,495           -3,036,944  -61.35%   x 2.59
+u128_natural::find_all          2,352,708         503,631             -1,849,077  -78.59%   x 4.67
+u64_natural::find_all           2,025,607         396,861             -1,628,746  -80.41%   x 5.10
+usize_natural::find_all         2,071,958         398,027             -1,673,931  -80.79%   x 5.21
+u32_natural::find_all           1,992,639         342,627             -1,650,012  -82.81%   x 5.82
+u16_natural::find_all           865,885           276,190               -589,695  -68.10%   x 3.14
 
-u128_rand::insert_all           8,264,773         7,920,764             -344,009   -4.16%   x 1.04
-u64_rand::insert_all            6,672,117         6,341,322             -330,795   -4.96%   x 1.05
-usize_rand::insert_all          6,696,120         6,490,067             -206,053   -3.08%   x 1.03
-u32_rand::insert_all            6,625,881         6,375,432             -250,449   -3.78%   x 1.04
-u16_rand::insert_all            324,581           324,580                     -1   -0.00%   x 1.00
-u8_rand::insert_all             7,425             6,198                   -1,227  -16.53%   x 1.20
-u128_rand::find_all             2,328,925         2,076,310             -252,615  -10.85%   x 1.12
-u64_rand::find_all              2,052,410         1,949,207             -103,203   -5.03%   x 1.05
-usize_rand::find_all            2,145,243         1,914,162             -231,081  -10.77%   x 1.12
-u32_rand::find_all              2,037,734         1,831,239             -206,495  -10.13%   x 1.11
-u16_rand::find_all              43,012            29,991                 -13,021  -30.27%   x 1.43
-u8_rand::find_all               1,292             954                       -338  -26.16%   x 1.35
+u128_rand::insert_all           8,281,195         7,963,523             -317,672   -3.84%   x 1.04
+u64_rand::insert_all            6,671,253         6,310,732             -360,521   -5.40%   x 1.06
+usize_rand::insert_all          6,698,918         6,455,917             -243,001   -3.63%   x 1.04
+u32_rand::insert_all            6,598,060         6,315,266             -282,794   -4.29%   x 1.04
+u16_rand::insert_all            330,916           315,440                -15,476   -4.68%   x 1.05
+u8_rand::insert_all             7,492             6,076                   -1,416  -18.90%   x 1.23
+u128_rand::find_all             2,338,992         2,065,209             -273,783  -11.71%   x 1.13
+u64_rand::find_all              2,024,201         1,940,426              -83,775   -4.14%   x 1.04
+usize_rand::find_all            2,085,011         1,864,784             -220,227  -10.56%   x 1.12
+u32_rand::find_all              2,002,983         1,753,468             -249,515  -12.46%   x 1.14
+u16_rand::find_all              44,479            30,497                 -13,982  -31.44%   x 1.46
+u8_rand::find_all               1,292             882                       -410  -31.73%   x 1.46
 
-u64_times_table_32::insert_all  6,573,920         4,936,084           -1,637,836  -24.91%   x 1.33
-u32_times_table_32::insert_all  6,514,195         4,598,230           -1,915,965  -29.41%   x 1.42
-u16_times_table_32::insert_all  108,345           91,407                 -16,938  -15.63%   x 1.19
-u64_times_table_32::find_all    2,047,634         1,905,971             -141,663   -6.92%   x 1.07
-u32_times_table_32::find_all    2,023,473         1,697,730             -325,743  -16.10%   x 1.19
-u16_times_table_32::find_all    12,646            9,472                   -3,174  -25.10%   x 1.34
+u64_times_table_32::insert_all  6,563,801         4,862,680           -1,701,121  -25.92%   x 1.35
+u32_times_table_32::insert_all  6,484,104         4,366,920           -2,117,184  -32.65%   x 1.48
+u16_times_table_32::insert_all  109,195           93,945                 -15,250  -13.97%   x 1.16
+u64_times_table_32::find_all    2,020,953         1,936,193              -84,760   -4.19%   x 1.04
+u32_times_table_32::find_all    1,990,492         1,625,043             -365,449  -18.36%   x 1.22
+u16_times_table_32::find_all    12,919            9,458                   -3,461  -26.79%   x 1.37
+
 ```
 
 ## `seahash` vs `int_hash`
-_ℕ **2.72-9.70x** faster, random **1.07-2.83x** faster, 32× table **1.31-2.10x** faster_
+_ℕ **2.71-10.67x** faster, random **1.11-2.61x** faster, 32× table **1.29-2.14x** faster_
 ```
 name                            seahash_crate ns/iter  int_hash ns/iter  diff ns/iter   diff %  speedup
-u128_natural::insert_all        11,137,128             3,666,087           -7,471,041  -67.08%   x 3.04
-u64_natural::insert_all         7,116,342              2,167,465           -4,948,877  -69.54%   x 3.28
-usize_natural::insert_all       7,191,083              2,126,062           -5,065,021  -70.43%   x 3.38
-u32_natural::insert_all         7,008,973              2,521,114           -4,487,859  -64.03%   x 2.78
-u16_natural::insert_all         5,176,372              1,905,489           -3,270,883  -63.19%   x 2.72
-u128_natural::find_all          5,428,210              559,842             -4,868,368  -89.69%   x 9.70
-u64_natural::find_all           2,714,967              422,216             -2,292,751  -84.45%   x 6.43
-usize_natural::find_all         2,758,889              422,871             -2,336,018  -84.67%   x 6.52
-u32_natural::find_all           2,689,484              368,664             -2,320,820  -86.29%   x 7.30
-u16_natural::find_all           1,177,277              258,888               -918,389  -78.01%   x 4.55
+u128_natural::insert_all        11,359,016             3,726,791           -7,632,225  -67.19%   x 3.05
+u64_natural::insert_all         7,034,806              2,135,107           -4,899,699  -69.65%   x 3.29
+usize_natural::insert_all       7,261,798              2,131,158           -5,130,640  -70.65%   x 3.41
+u32_natural::insert_all         6,968,926              2,520,760           -4,448,166  -63.83%   x 2.76
+u16_natural::insert_all         5,193,001              1,913,495           -3,279,506  -63.15%   x 2.71
+u128_natural::find_all          5,371,472              503,631             -4,867,841  -90.62%  x 10.67
+u64_natural::find_all           2,831,999              396,861             -2,435,138  -85.99%   x 7.14
+usize_natural::find_all         2,744,145              398,027             -2,346,118  -85.50%   x 6.89
+u32_natural::find_all           2,741,229              342,627             -2,398,602  -87.50%   x 8.00
+u16_natural::find_all           1,179,988              276,190               -903,798  -76.59%   x 4.27
 
-u128_rand::insert_all           10,999,250             7,920,764           -3,078,486  -27.99%   x 1.39
-u64_rand::insert_all            7,102,610              6,341,322             -761,288  -10.72%   x 1.12
-usize_rand::insert_all          7,235,882              6,490,067             -745,815  -10.31%   x 1.11
-u32_rand::insert_all            7,086,609              6,375,432             -711,177  -10.04%   x 1.11
-u16_rand::insert_all            348,792                324,580                -24,212   -6.94%   x 1.07
-u8_rand::insert_all             7,751                  6,198                   -1,553  -20.04%   x 1.25
-u128_rand::find_all             5,866,014              2,076,310           -3,789,704  -64.60%   x 2.83
-u64_rand::find_all              2,720,173              1,949,207             -770,966  -28.34%   x 1.40
-usize_rand::find_all            2,737,408              1,914,162             -823,246  -30.07%   x 1.43
-u32_rand::find_all              2,698,920              1,831,239             -867,681  -32.15%   x 1.47
-u16_rand::find_all              66,787                 29,991                 -36,796  -55.09%   x 2.23
-u8_rand::find_all               2,078                  954                     -1,124  -54.09%   x 2.18
+u128_rand::insert_all           11,260,861             7,963,523           -3,297,338  -29.28%   x 1.41
+u64_rand::insert_all            7,011,184              6,310,732             -700,452   -9.99%   x 1.11
+usize_rand::insert_all          7,302,565              6,455,917             -846,648  -11.59%   x 1.13
+u32_rand::insert_all            7,049,107              6,315,266             -733,841  -10.41%   x 1.12
+u16_rand::insert_all            355,698                315,440                -40,258  -11.32%   x 1.13
+u8_rand::insert_all             7,760                  6,076                   -1,684  -21.70%   x 1.28
+u128_rand::find_all             5,393,819              2,065,209           -3,328,610  -61.71%   x 2.61
+u64_rand::find_all              2,834,543              1,940,426             -894,117  -31.54%   x 1.46
+usize_rand::find_all            2,726,268              1,864,784             -861,484  -31.60%   x 1.46
+u32_rand::find_all              2,760,185              1,753,468           -1,006,717  -36.47%   x 1.57
+u16_rand::find_all              67,794                 30,497                 -37,297  -55.02%   x 2.22
+u8_rand::find_all               2,079                  882                     -1,197  -57.58%   x 2.36
 
-u64_times_table_32::insert_all  7,207,157              4,936,084           -2,271,073  -31.51%   x 1.46
-u32_times_table_32::insert_all  6,879,415              4,598,230           -2,281,185  -33.16%   x 1.50
-u16_times_table_32::insert_all  119,530                91,407                 -28,123  -23.53%   x 1.31
-u64_times_table_32::find_all    2,739,972              1,905,971             -834,001  -30.44%   x 1.44
-u32_times_table_32::find_all    2,690,811              1,697,730             -993,081  -36.91%   x 1.58
-u16_times_table_32::find_all    19,926                 9,472                  -10,454  -52.46%   x 2.10
+u64_times_table_32::insert_all  7,124,570              4,862,680           -2,261,890  -31.75%   x 1.47
+u32_times_table_32::insert_all  6,849,191              4,366,920           -2,482,271  -36.24%   x 1.57
+u16_times_table_32::insert_all  121,184                93,945                 -27,239  -22.48%   x 1.29
+u64_times_table_32::find_all    2,849,781              1,936,193             -913,588  -32.06%   x 1.47
+u32_times_table_32::find_all    2,753,743              1,625,043           -1,128,700  -40.99%   x 1.69
+u16_times_table_32::find_all    20,282                 9,458                  -10,824  -53.37%   x 2.14
 ```
 
 ## `twox_hash` vs `int_hash`
-_ℕ **2.81-9.19x** faster, random **1.17-3.91x** faster, 32× table **1.52-3.59x** faster_
+_ℕ **2.93-9.85x** faster, random **1.20-4.17x** faster, 32× table **1.55-3.64x** faster_
 ```
 name                            twox_crate ns/iter  int_hash ns/iter  diff ns/iter   diff %  speedup
-u128_natural::insert_all        10,292,140          3,666,087           -6,626,053  -64.38%   x 2.81
-u64_natural::insert_all         7,732,500           2,167,465           -5,565,035  -71.97%   x 3.57
-usize_natural::insert_all       7,735,446           2,126,062           -5,609,384  -72.52%   x 3.64
-u32_natural::insert_all         7,466,322           2,521,114           -4,945,208  -66.23%   x 2.96
-u16_natural::insert_all         5,685,675           1,905,489           -3,780,186  -66.49%   x 2.98
-u128_natural::find_all          5,125,067           559,842             -4,565,225  -89.08%   x 9.15
-u64_natural::find_all           3,297,794           422,216             -2,875,578  -87.20%   x 7.81
-usize_natural::find_all         3,292,033           422,871             -2,869,162  -87.15%   x 7.78
-u32_natural::find_all           3,388,255           368,664             -3,019,591  -89.12%   x 9.19
-u16_natural::find_all           1,675,797           258,888             -1,416,909  -84.55%   x 6.47
+u128_natural::insert_all        10,917,497          3,726,791           -7,190,706  -65.86%   x 2.93
+u64_natural::insert_all         7,776,458           2,135,107           -5,641,351  -72.54%   x 3.64
+usize_natural::insert_all       7,816,477           2,131,158           -5,685,319  -72.74%   x 3.67
+u32_natural::insert_all         7,446,445           2,520,760           -4,925,685  -66.15%   x 2.95
+u16_natural::insert_all         5,656,950           1,913,495           -3,743,455  -66.17%   x 2.96
+u128_natural::find_all          4,778,330           503,631             -4,274,699  -89.46%   x 9.49
+u64_natural::find_all           3,434,316           396,861             -3,037,455  -88.44%   x 8.65
+usize_natural::find_all         3,342,633           398,027             -2,944,606  -88.09%   x 8.40
+u32_natural::find_all           3,374,483           342,627             -3,031,856  -89.85%   x 9.85
+u16_natural::find_all           1,682,861           276,190             -1,406,671  -83.59%   x 6.09
 
-u128_rand::insert_all           10,367,506          7,920,764           -2,446,742  -23.60%   x 1.31
-u64_rand::insert_all            7,659,986           6,341,322           -1,318,664  -17.21%   x 1.21
-usize_rand::insert_all          7,677,055           6,490,067           -1,186,988  -15.46%   x 1.18
-u32_rand::insert_all            7,467,646           6,375,432           -1,092,214  -14.63%   x 1.17
-u16_rand::insert_all            396,252             324,580                -71,672  -18.09%   x 1.22
-u8_rand::insert_all             10,395              6,198                   -4,197  -40.38%   x 1.68
-u128_rand::find_all             5,113,492           2,076,310           -3,037,182  -59.40%   x 2.46
-u64_rand::find_all              3,281,844           1,949,207           -1,332,637  -40.61%   x 1.68
-usize_rand::find_all            3,288,494           1,914,162           -1,374,332  -41.79%   x 1.72
-u32_rand::find_all              3,360,082           1,831,239           -1,528,843  -45.50%   x 1.83
-u16_rand::find_all              111,750             29,991                 -81,759  -73.16%   x 3.73
-u8_rand::find_all               3,732               954                     -2,778  -74.44%   x 3.91
+u128_rand::insert_all           10,977,046          7,963,523           -3,013,523  -27.45%   x 1.38
+u64_rand::insert_all            7,696,870           6,310,732           -1,386,138  -18.01%   x 1.22
+usize_rand::insert_all          7,757,104           6,455,917           -1,301,187  -16.77%   x 1.20
+u32_rand::insert_all            7,547,967           6,315,266           -1,232,701  -16.33%   x 1.20
+u16_rand::insert_all            397,421             315,440                -81,981  -20.63%   x 1.26
+u8_rand::insert_all             10,527              6,076                   -4,451  -42.28%   x 1.73
+u128_rand::find_all             4,729,428           2,065,209           -2,664,219  -56.33%   x 2.29
+u64_rand::find_all              3,413,292           1,940,426           -1,472,866  -43.15%   x 1.76
+usize_rand::find_all            3,336,895           1,864,784           -1,472,111  -44.12%   x 1.79
+u32_rand::find_all              3,367,959           1,753,468           -1,614,491  -47.94%   x 1.92
+u16_rand::find_all              112,784             30,497                 -82,287  -72.96%   x 3.70
+u8_rand::find_all               3,676               882                     -2,794  -76.01%   x 4.17
 
-u64_times_table_32::insert_all  7,526,265           4,936,084           -2,590,181  -34.42%   x 1.52
-u32_times_table_32::insert_all  7,613,790           4,598,230           -3,015,560  -39.61%   x 1.66
-u16_times_table_32::insert_all  145,637             91,407                 -54,230  -37.24%   x 1.59
-u64_times_table_32::find_all    3,285,227           1,905,971           -1,379,256  -41.98%   x 1.72
-u32_times_table_32::find_all    3,373,475           1,697,730           -1,675,745  -49.67%   x 1.99
-u16_times_table_32::find_all    33,995              9,472                  -24,523  -72.14%   x 3.59
+u64_times_table_32::insert_all  7,571,333           4,862,680           -2,708,653  -35.78%   x 1.56
+u32_times_table_32::insert_all  7,698,344           4,366,920           -3,331,424  -43.27%   x 1.76
+u16_times_table_32::insert_all  145,995             93,945                 -52,050  -35.65%   x 1.55
+u64_times_table_32::find_all    3,412,272           1,936,193           -1,476,079  -43.26%   x 1.76
+u32_times_table_32::find_all    3,379,171           1,625,043           -1,754,128  -51.91%   x 2.08
+u16_times_table_32::find_all    34,468              9,458                  -25,010  -72.56%   x 3.64
 ```

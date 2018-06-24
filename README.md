@@ -19,21 +19,21 @@ For more info see the [the full benchmark report](bench_report.md).
 
 Hash Algorithm | Integer Sample Set | `int_hash` is
 --- | --- | ---
-Rust default _aka **SipHash**_ | ℕ: Natural numbers | **2.57-8.38x** faster
-Rust default _aka **SipHash**_ | Random numbers | **1.17-3.61x** faster
-Rust default _aka **SipHash**_ | 32× table | **1.52-3.09x** faster
-`fnv` | ℕ: Natural numbers | **1.36-5.27x** faster
-`fnv` | Random numbers | **0.99-1.83x** faster
-`fnv` | 32× table | **0.60-1.12x** faster
-`rustc-hash` _aka **fx**_ | ℕ: Natural numbers | **1.16-2.34x** faster
-`rustc-hash` _aka **fx**_ | Random numbers | **0.94-1.10x** faster
-`rustc-hash` _aka **fx**_ | 32× table | **0.98-1.17x** faster
-`seahash` | ℕ: Natural numbers | **2.72-9.70x** faster
-`seahash` | Random numbers | **1.07-2.83x** faster
-`seahash` | 32× table | **1.31-2.10x** faster
-`twox_hash` _aka **xx**_ | ℕ: Natural numbers | **2.81-9.19x** faster
-`twox_hash` _aka **xx**_ | Random numbers | **1.17-3.91x** faster
-`twox_hash` _aka **xx**_ | 32× table | **1.52-3.59x** faster
+Rust default _aka **SipHash**_ | ℕ: Natural numbers | **2.53-9.06x** faster
+Rust default _aka **SipHash**_ | Random numbers | **1.18-3.90x** faster
+Rust default _aka **SipHash**_ | 32× table | **1.49-3.13x** faster
+`fnv` | ℕ: Natural numbers | **1.31-5.84x** faster
+`fnv` | Random numbers | **1.00-1.84x** faster
+`fnv` | 32× table | **0.59-1.14x** faster
+`rustc-hash` _aka **fx**_ | ℕ: Natural numbers | **1.14-2.48x** faster
+`rustc-hash` _aka **fx**_ | Random numbers | **0.95-1.07x** faster
+`rustc-hash` _aka **fx**_ | 32× table | **0.97-1.13x** faster
+`seahash` | ℕ: Natural numbers | **2.71-10.67x** faster
+`seahash` | Random numbers | **1.11-2.61x** faster
+`seahash` | 32× table | **1.29-2.14x** faster
+`twox_hash` _aka **xx**_ | ℕ: Natural numbers | **2.93-9.85x** faster
+`twox_hash` _aka **xx**_ | Random numbers | **1.20-4.17x** faster
+`twox_hash` _aka **xx**_ | 32× table | **1.55-3.64x** faster
 
 ## Limitations
 `int_hash` is valid for use only with integer sized data, ie <= 16 bytes. This is enforced with debug assertions. This should guarantee that whenever `int_hash` works it's among the fastest options.
