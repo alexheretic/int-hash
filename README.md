@@ -38,7 +38,7 @@ Rust default _aka **SipHash**_ | 32× table | **1.49-3.13x** faster
 ## Limitations
 `int_hash` is valid for use only with integer sized data, ie <= 16 bytes. This is enforced with debug assertions. This should guarantee that whenever `int_hash` works it's among the fastest options.
 
-However, for general non-integer small keys [fx-hash](https://github.com/rust-lang-nursery/rustc-hash) seems the best option. Don't forget about [vec_map](https://github.com/contain-rs/vec-map) either which may fit a natural number use case better than any hashmap.
+However, for general non-integer small keys [fx-hash](https://github.com/rust-lang-nursery/rustc-hash) seems the best option & is pretty good for integers too. Don't forget about [vec_map](https://github.com/contain-rs/vec-map) either which may fit a natural number use case better than any hashmap.
 
 The algorithm is non-cryptographic.
 
