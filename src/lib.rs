@@ -23,9 +23,6 @@
 //! # Limitations
 //! Valid for use only with integer sized data, ie <= 16 bytes.
 //! This is enforced with debug assertions.
-
-extern crate byteorder;
-
 use byteorder::{ByteOrder, NativeEndian};
 use std::collections::{HashMap, HashSet};
 use std::hash::{BuildHasherDefault, Hasher};
