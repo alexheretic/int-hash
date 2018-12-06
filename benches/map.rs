@@ -15,7 +15,7 @@ use std::fs::File;
 use std::hash::BuildHasherDefault;
 use std::io::{BufRead, BufReader};
 use test::Bencher;
-use this_crate::*;
+use crate::this_crate::*;
 
 /// Each file contains 100000 unique integers
 const KEYS_LINE_COUNT: usize = 100_000;
