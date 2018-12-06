@@ -5,17 +5,17 @@ extern crate fnv;
 extern crate int_hash as this_crate;
 extern crate rustc_hash;
 extern crate seahash;
-extern crate twox_hash;
 extern crate test;
+extern crate twox_hash;
 
 use fnv::FnvBuildHasher;
-use this_crate::*;
 use std::collections::hash_map::RandomState;
 use std::collections::HashMap;
 use std::fs::File;
 use std::hash::BuildHasherDefault;
 use std::io::{BufRead, BufReader};
 use test::Bencher;
+use this_crate::*;
 
 /// Each file contains 100000 unique integers
 const KEYS_LINE_COUNT: usize = 100_000;

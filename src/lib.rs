@@ -100,8 +100,7 @@ impl IntHasher {
         #[cfg(debug_assertions)] {
             if cfg!(target_pointer_width = "32") {
                 self.bytes_hashed += 4;
-            }
-            else {
+            } else {
                 self.bytes_hashed += 8;
             }
             assert!(self.bytes_hashed <= 16, ASSERT_MESSAGE);
