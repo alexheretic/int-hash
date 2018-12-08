@@ -6,11 +6,13 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-//! Very fast, very simple hash algorithm designed for use in
-//! integer hash maps & sets.
+//! Very fast, very simple hash algorithm designed for use in integer hash maps & sets.
 //!
 //! This crate attempts to provide the **fastest option for integer key hashmaps**.
 //! So the algorithm may change if a better method is found for this use case.
+//!
+//! When hashing data larger than 64-bits the hasher will fallback to a secondary algorithm suitable
+//! for arbitrary data (defaults to `FxHasher`).
 //!
 //! # Example
 //!
@@ -19,11 +21,8 @@
 //! let mut map: IntHashMap<u32, &str> = IntHashMap::default();
 //! map.insert(22, "abc");
 //! ```
-//!
-//! # Limitations
-//! Valid for use only with integer sized data, ie <= 16 bytes.
-//! This is enforced with debug assertions.
 use byteorder::{ByteOrder, NativeEndian};
+use rustc_hash::FxHasher;
 use std::collections::{HashMap, HashSet};
 use std::hash::{BuildHasherDefault, Hasher};
 use std::ops::BitXor;
@@ -53,169 +52,71 @@ pub type IntHashSet<V> = HashSet<V, IntBuildHasher>;
 /// Very fast, very simple hash algorithm designed for use in
 /// integer hash maps & sets.
 ///
-/// Valid for use only with integer sized data, ie <= 16 bytes.
-/// This is enforced with debug assertions.
-pub struct IntHasher {
-    #[cfg(debug_assertions)]
-    bytes_hashed: u8,
-    hash: usize,
+/// When hashing data larger than 64-bits the hasher will fallback
+/// to a secondary algorithm suitable for arbitrary data (defaults to `FxHasher`).
+pub enum IntHasher<F: Hasher + Default = FxHasher> {
+    Small { data: [u8; 8], length: u8 },
+    Large(F),
 }
 
-impl Default for IntHasher {
-    #[cfg(target_pointer_width = "32")]
+impl<F: Hasher + Default> Default for IntHasher<F> {
     #[inline]
     fn default() -> Self {
-        Self::new(0xdead_beef)
-    }
-
-    #[cfg(target_pointer_width = "64")]
-    #[inline]
-    fn default() -> Self {
-        // Magic number found by random search & benchmark
-        Self::new(0xe26a_f83e_0dff_34cc)
-    }
-}
-
-#[cfg(debug_assertions)]
-const ASSERT_MESSAGE: &str = "int_hash algorithm only valid for values of size <= 16 bytes";
-
-impl IntHasher {
-    /// Returns a new [IntHasher] with a custom inital value.
-    ///
-    /// `IntHasher::default()` is generally fine.
-    #[inline]
-    pub fn new(seed: usize) -> Self {
-        Self {
-            #[cfg(debug_assertions)]
-            bytes_hashed: 0,
-            hash: seed,
+        IntHasher::Small {
+            data: [0; 8],
+            length: 0,
         }
     }
+}
 
+impl<F: Hasher + Default> IntHasher<F> {
     #[inline]
-    fn hash(&mut self, v: usize) {
-        #[cfg(debug_assertions)] {
-            if cfg!(target_pointer_width = "32") {
-                self.bytes_hashed += 4;
-            } else {
-                self.bytes_hashed += 8;
+    fn enlarge(&mut self) -> &mut F {
+        match self {
+            IntHasher::Small { data, .. } => {
+                let mut large_hasher = F::default();
+                large_hasher.write(data);
+                *self = IntHasher::Large(large_hasher);
+                if let IntHasher::Large(hasher) = self {
+                    hasher
+                } else {
+                    unreachable!()
+                }
             }
-            assert!(self.bytes_hashed <= 16, ASSERT_MESSAGE);
+            IntHasher::Large(ref mut hasher) => hasher,
         }
-
-        self.hash = self.hash.bitxor(v);
     }
 }
 
-impl Hasher for IntHasher {
-    #[cfg(target_pointer_width = "32")]
+impl<F: Hasher + Default> Hasher for IntHasher<F> {
     #[inline]
-    fn write(&mut self, mut bytes: &[u8]) {
-        while bytes.len() >= 4 {
-            self.write_u32(NativeEndian::read_u32(bytes));
-            bytes = &bytes[4..];
+    fn write(&mut self, bytes: &[u8]) {
+        match self {
+            IntHasher::Small {
+                ref mut data,
+                ref mut length,
+            } => {
+                let data_used = *length as usize;
+                let new_bytes_len = bytes.len();
+                if new_bytes_len > 8 || new_bytes_len + data_used > 8 {
+                    self.enlarge().write(bytes);
+                } else {
+                    data[data_used..data_used + new_bytes_len].clone_from_slice(&bytes);
+                    *length += new_bytes_len as u8;
+                }
+            }
+            IntHasher::Large(hasher) => hasher.write(bytes),
         }
-        if bytes.len() >= 2 {
-            self.write_u16(NativeEndian::read_u16(bytes));
-            bytes = &bytes[2..];
-        }
-        if !bytes.is_empty() {
-            self.write_u8(bytes[0]);
-        }
-    }
-
-    #[cfg(target_pointer_width = "64")]
-    #[inline]
-    fn write(&mut self, mut bytes: &[u8]) {
-        while bytes.len() >= 8 {
-            self.write_u64(NativeEndian::read_u64(bytes));
-            bytes = &bytes[8..];
-        }
-        if bytes.len() >= 4 {
-            self.write_u32(NativeEndian::read_u32(bytes));
-            bytes = &bytes[4..];
-        }
-        if bytes.len() >= 2 {
-            self.write_u16(NativeEndian::read_u16(bytes));
-            bytes = &bytes[2..];
-        }
-        if !bytes.is_empty() {
-            self.write_u8(bytes[0]);
-        }
-    }
-
-    #[inline]
-    fn write_u8(&mut self, v: u8) {
-        self.hash(usize::from(v));
-    }
-
-    #[inline]
-    fn write_u16(&mut self, v: u16) {
-        self.hash(usize::from(v));
-    }
-
-    #[inline]
-    fn write_u32(&mut self, v: u32) {
-        self.hash(v as usize);
-    }
-
-    #[cfg(target_pointer_width = "32")]
-    #[inline]
-    fn write_u64(&mut self, v: u64) {
-        self.hash(v as usize);
-        self.hash((v >> 32) as usize);
-    }
-
-    #[cfg(target_pointer_width = "64")]
-    #[inline]
-    fn write_u64(&mut self, v: u64) {
-        self.hash(v as usize);
-    }
-
-    #[inline]
-    fn write_u128(&mut self, v: u128) {
-        self.write_u64(v as u64);
-        self.write_u64((v >> 64) as u64);
-    }
-
-    #[inline]
-    fn write_usize(&mut self, v: usize) {
-        self.hash(v);
-    }
-
-    #[inline]
-    fn write_isize(&mut self, v: isize) {
-        self.write_usize(v as usize);
-    }
-
-    #[inline]
-    fn write_i8(&mut self, v: i8) {
-        self.write_u8(v as u8);
-    }
-
-    #[inline]
-    fn write_i16(&mut self, v: i16) {
-        self.write_u16(v as u16);
-    }
-
-    #[inline]
-    fn write_i32(&mut self, v: i32) {
-        self.write_u32(v as u32);
-    }
-
-    #[inline]
-    fn write_i64(&mut self, v: i64) {
-        self.write_u64(v as u64);
-    }
-
-    #[inline]
-    fn write_i128(&mut self, v: i128) {
-        self.write_u128(v as u128);
     }
 
     #[inline]
     fn finish(&self) -> u64 {
-        self.hash as u64
+        match self {
+            IntHasher::Small { data, .. } => {
+                NativeEndian::read_u64(data).bitxor(0xe26a_f83e_0dff_34cc)
+            }
+            IntHasher::Large(hasher) => hasher.finish(),
+        }
     }
 }
 
@@ -267,18 +168,8 @@ mod test {
         assert_eq!(map[&[0, 0, 0, 1]], "c");
     }
 
-    /// Should assert small key usage
-    #[test]
-    #[should_panic]
-    #[cfg(debug_assertions)]
-    fn max_data_debug_assert() {
-        let mut large_key_map: IntHashMap<[u32; 4], _> = HashMap::default();
-        large_key_map.insert([1, 2, 3, 4], "a");
-    }
-
     /// Should not panic in release mode
     #[test]
-    #[cfg(not(debug_assertions))]
     fn max_data_debug_assert() {
         let mut large_key_map: IntHashMap<[u32; 4], _> = HashMap::default();
         large_key_map.insert([1, 2, 3, 4], "a");

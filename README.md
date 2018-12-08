@@ -14,35 +14,35 @@ let mut map: IntHashMap<u32, &str> = IntHashMap::default();
 map.insert(22, "abc");
 ```
 
+When hashing data larger than 64-bits the hasher will fallback to a secondary algorithm suitable for arbitrary data (defaults to `FxHasher`).
+
 ## Benchmark Performance
 For more info see the [the full benchmark report](bench_report.md).
 
 Hash Algorithm | Integer Sample Set | `int_hash` is
 --- | --- | ---
-Rust default _aka **SipHash**_ | ℕ: Natural numbers | **2.53-9.06x** faster
-Rust default _aka **SipHash**_ | Random numbers | **1.18-3.90x** faster
-Rust default _aka **SipHash**_ | 32× table | **1.49-3.13x** faster
-`fnv` | ℕ: Natural numbers | **1.31-5.84x** faster
-`fnv` | Random numbers | **1.00-1.84x** faster
-`fnv` | 32× table | **0.59-1.14x** faster
-`rustc-hash` _aka **fx**_ | ℕ: Natural numbers | **1.14-2.48x** faster
-`rustc-hash` _aka **fx**_ | Random numbers | **0.95-1.07x** faster
-`rustc-hash` _aka **fx**_ | 32× table | **0.97-1.13x** faster
-`seahash` | ℕ: Natural numbers | **2.71-10.67x** faster
-`seahash` | Random numbers | **1.11-2.61x** faster
-`seahash` | 32× table | **1.29-2.14x** faster
-`twox_hash` _aka **xx**_ | ℕ: Natural numbers | **2.93-9.85x** faster
-`twox_hash` _aka **xx**_ | Random numbers | **1.20-4.17x** faster
-`twox_hash` _aka **xx**_ | 32× table | **1.55-3.64x** faster
+Rust default _aka **SipHash**_ | Random numbers | **1.23-9.61x** faster
+Rust default _aka **SipHash**_ | Natural numbers | **3.82-21.6x** faster
+Rust default _aka **SipHash**_ | 32× table | **1.59-4.94x** faster
+`fnv` | Random numbers | **0.99-1.58x** faster
+`fnv` | Natural numbers | **2.11-11.08x** faster
+`fnv` | 32× table | **0.57-1.09x** faster
+`rustc-hash` _aka **fx**_ | Random numbers | **0.95-1.29x** faster
+`rustc-hash` _aka **fx**_ | Natural numbers | **1.26-2.15x** faster
+`rustc-hash` _aka **fx**_ | 32× table | **0.94-1.28x** faster
+`seahash` | Random numbers | **1.16-5.57x** faster
+`seahash` | Natural numbers | **3.65-19.35x** faster
+`seahash` | 32× table | **1.33-3.11x** faster
+`twox_hash` _aka **xx**_ | Random numbers | **1.25-9.55x** faster
+`twox_hash` _aka **xx**_ | Natural numbers | **4.05-23.95x** faster
+`twox_hash` _aka **xx**_ | 32× table | **1.68-5.67xx** faster
+
+_Note: For > 64-bit keys int_hash will perform inline with `rustc_hash`._
 
 ## Limitations
-`int_hash` is valid for use only with integer sized data, ie <= 16 bytes. This is enforced with debug assertions. This should guarantee that whenever `int_hash` works it's among the fastest options.
-
-However, for general non-integer small keys [fx-hash](https://github.com/rust-lang-nursery/rustc-hash) seems the best option & is pretty good for integers too. Don't forget about [vec_map](https://github.com/contain-rs/vec-map) either which may fit a natural number use case better than any hashmap.
-
 The algorithm is non-cryptographic.
 
 ## Why is it so fast
-`int_hash` is dedicated at solving integer-sized hashing and _only_ integer-sized hashing. Producing a unique `u64` from an integer is not a very difficult problem, though getting a good spread of values to minimise hashmap collisions is a little harder.
+`int_hash` is dedicated at solving integer-sized hashing. Producing a unique `u64` from an integer is not a very difficult problem, though getting a good spread of values to minimise hashmap collisions is a little harder.
 
-The current implementation uses simple `usize` XOR mixing to spread values. The sheer simplicity of this approach makes the hashing operation very fast and the primitive spreading is good enough to produce best-in-class hashmap performance.
+The current implementation uses simple `u64` XOR mixing to spread values. The sheer simplicity of this approach makes the hashing operation very fast and the primitive spreading is good enough to produce best-in-class hashmap performance.

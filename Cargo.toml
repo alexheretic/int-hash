@@ -1,6 +1,6 @@
 [package]
 name = "int_hash"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Alex Butler <alexheretic@gmail.com>"]
 edition = "2018"
 description = "Very fast, very simple hash algorithm designed for use in integer hash maps & sets."
@@ -11,9 +11,9 @@ readme="README.md"
 
 [dependencies]
 byteorder = "1"
+rustc-hash = "1"
 
 [dev-dependencies]
 fnv = "1"
-rustc-hash = "1"
 twox-hash = "1"
 seahash = "3"

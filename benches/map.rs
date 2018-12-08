@@ -104,13 +104,11 @@ macro_rules! bench_hasher {
 
                 bench_keys!(
                     $build_hasher,
-                    u128 = u128_natural = "benches/natural-u64.txt",
                     u64 = u64_natural = "benches/natural-u64.txt",
                     usize = usize_natural = "benches/natural-u64.txt",
                     u32 = u32_natural = "benches/natural-u64.txt",
                     u16 = u16_natural = "benches/natural-u64.txt",
 
-                    u128 = u128_rand = "benches/rand-u64.txt",
                     u64 = u64_rand = "benches/rand-u64.txt",
                     usize = usize_rand = "benches/rand-u64-small.txt",
                     u32 = u32_rand = "benches/rand-u64-small.txt",
